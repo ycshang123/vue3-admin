@@ -3,6 +3,7 @@ import md5 from 'md5'
 import { setItem, getItem, removeAllItem } from '@/utils/storage'
 import { TOKEN } from '@/constant'
 import router from '@/router'
+import { setTimeStamp } from '@/utils/auth'
 export default {
   namespaced: true,
   state: () => ({
@@ -28,6 +29,7 @@ export default {
           password: md5(password)
         })
           .then((data) => {
+            setTimeStamp()
             resolve(data)
             console.log(data)
             this.commit('user/setToken', data.token)
@@ -40,7 +42,6 @@ export default {
     // 增加
     async getUserInfo (context) {
       const res = await getUserInfo()
-      console.log('请求用户信息')
       console.log(res)
       this.commit('user/setUserInfo', res)
       return res
