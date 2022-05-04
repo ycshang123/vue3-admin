@@ -5,6 +5,8 @@ import store from './store'
 import installElementPlus from './plugins/element'
 // 导入全局样式
 import './style/index.scss'
+// 导入权限控制模块
+import './permission'
 import installIcons from '@/icons'
 const app = createApp(App)
 installElementPlus(app)
