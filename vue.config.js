@@ -32,5 +32,17 @@ module.exports = defineConfig({
         changeOrigin: true
       }
     }
+  },
+  configureWebpack () {
+    return {
+      resolve: {
+        alias: {
+          '@': resolve('src')
+        },
+        fallback: {
+          path: require.resolve('path-browserify')
+        }
+      }
+    }
   }
 })
