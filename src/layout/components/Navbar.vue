@@ -26,12 +26,32 @@
 </template>
 
 <script setup>
-import { } from 'vue'
+import { ref, watch } from 'vue'
+import { useRoute } from 'vue-router'
 import { useStore } from 'vuex'
 import Hamburger from '@/components/Hamburger'
 import Breadcrumb from '@/components/Breadcrumb'
 // 退出登录处理
 const store = useStore()
+const route = useRoute()
+
+// 生成数组数据
+const breadcrumData = ref([])
+const getBreadcrumbData = () => {
+  breadcrumData.value = route.matched.filter(
+    item => item.meta && item.meta.title
+  )
+}
+
+watch(
+  route,
+  () => {
+    getBreadcrumbData()
+  },
+  {
+    immediate: true
+  }
+)
 const logout = () => {
   store.dispatch('user/logout')
 }
@@ -54,7 +74,7 @@ const logout = () => {
       background: rgba(0, 0, 0, 0.1);
     }
   }
-  .breadcrumb-container{
+  .breadcrumb-container {
     float: left;
   }
   .right-menu {
