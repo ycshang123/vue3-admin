@@ -14,6 +14,11 @@ router.beforeEach(async (to, from, next) => {
     if (to.path === '/login') {
       next('/')
     } else {
+      console.log(store.getters.hasUserInfo)
+      // 不存在用户信息，需要获取用户信息
+      if (!store.getters.hasUserInfo) {
+        await store.dispatch('user/getUserInfo')
+      }
       next()
     }
   } else {
