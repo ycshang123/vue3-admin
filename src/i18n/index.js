@@ -1,6 +1,7 @@
 import { createI18n } from 'vue-i18n'
 import mZhLocale from './lang/zh'
 import mEnLocale from './lang/en'
+import store from '@/store'
 // 创建 message 数据源
 const messages = {
   en: {
@@ -24,9 +25,13 @@ const i18n = createI18n({
   legacy: false,
   // 全局注入 $t 函数
   globalInjection: true,
-  locale,
+  locale: getLanguage(),
   messages
 })
+
+function getLanguage () {
+  return store && store.getters && store.getters.language
+}
 
 // 导出 i18n 实例
 export default i18n
