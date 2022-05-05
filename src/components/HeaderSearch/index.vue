@@ -19,6 +19,7 @@
 
 <script setup>
 import { ref } from 'vue'
+import Fuse from 'fuse.js'
 
 // 控制 search 显示
 const isShow = ref(false)
@@ -39,6 +40,29 @@ const querySearch = () => {
 const onSelectChange = () => {
   console.log('onSelectChange')
 }
+
+/**
+* 搜索库相关
+*/
+const fuse = new Fuse(list, {
+  // 是否按优先级进行排序
+  shouldSort: true,
+  // 匹配长度超过这个值的才会被认为是匹配的
+  minMatchCharLength: 1,
+  // 将被搜索的键列表。 这支持嵌套路径、加权搜索、在字符串和对象数组中搜索。
+  // name：搜索的键
+  // weight：对应的权重
+  keys: [
+    {
+      name: 'title',
+      weight: 0.7
+    },
+    {
+      name: 'path',
+      weight: 0.3
+    }
+  ]
+})
 </script>
 
 <style lang="scss" scoped>

@@ -5,8 +5,9 @@
 </template>
 
 <script setup>
-import { computed } from 'vue'
-import { useStore } from 'vuex'
+import { ref, computed } from 'vue'
+import { filterRouters, generateMenus } from '@/utils/route'
+import { useRouter } from 'vue-router'
 
 const store = useStore()
 const toggleClick = () => {
@@ -16,6 +17,16 @@ const toggleClick = () => {
 const icon = computed(() =>
   store.getters.sidebarOpened ? 'hamburger-opened' : 'hamburger-closed'
 )
+
+// 检索数据源
+const router = useRouter()
+const searchPool = computed(() => {
+  const filterRoutes = filterRouters(router.getRoutes())
+  console.log(generateMenus(filterRoutes))
+  return generateMenus(filterRoutes)
+})
+console.log(searchPool)
+
 </script>
 
 <style lang="scss" scoped>
