@@ -37,6 +37,8 @@ const getFeatureData = async () => {
   featureData.value = await getFeature()
 }
 getFeatureData()
+// 监听语言切换
+watchSwitchLang(getFeatureData)
 
 </script>
 
