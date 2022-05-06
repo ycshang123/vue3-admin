@@ -1,6 +1,6 @@
 <template>
   <div class="navbar">
-    <hamburger class="hamburger-container" />
+    <breadcrumb id="guide-breadcrumb" class="breadcrumb-container" />
     <breadcrumb class="breadcrumb-container" />
     <div class="right-menu">
       <header-search class="right-menu-item hover-effect" />
