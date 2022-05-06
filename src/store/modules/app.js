@@ -1,10 +1,11 @@
-import { LANG } from '@/constant'
+import { LANG, TAGS_VIEW } from '@/constant'
 import { getItem, setItem } from '@/utils/storage'
 export default {
   namespaced: true,
   state: () => ({
     sidebarOpened: true,
-    language: getItem(LANG) || 'zh'
+    language: getItem(LANG) || 'zh',
+    tagsViewList: getItem(TAGS_VIEW) || []
   }),
   mutations: {
     triggerSidebarOpened (state) {
@@ -13,6 +14,16 @@ export default {
     setLanguage (state, lang) {
       setItem(LANG, lang)
       state.language = lang
+    },
+    addTagsViewList (state, tag) {
+      const isFind = state.tagsViewList.find(item => {
+        return item.path === tag.path
+      })
+      // 处理重复
+      if (!isFind) {
+        state.tagsViewList.push(tag)
+        setItem(TAGS_VIEW, state.tagsViewList)
+      }
     }
   },
   actions: {}
