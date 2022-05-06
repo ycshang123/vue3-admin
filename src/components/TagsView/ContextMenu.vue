@@ -13,6 +13,7 @@
 </template>
 
 <script setup>
+import { useStore } from 'vuex'
 const props = defineProps({
   index: {
     type: Number,
@@ -21,10 +22,20 @@ const props = defineProps({
 })
 
 const onRefreshClick = () => { }
+const store = useStore()
+const onCloseRightClick = () => {
+  store.commit('app/removeTagsView', {
+    type: 'right',
+    index: props.index
+  })
+}
 
-const onCloseRightClick = () => { }
-
-const onCloseOtherClick = () => { }
+const onCloseOtherClick = () => {
+  store.commit('app/removeTagsView', {
+    type: 'other',
+    index: props.index
+  })
+}
 </script>
 
 <style lang="scss" scoped>

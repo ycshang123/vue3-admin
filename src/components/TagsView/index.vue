@@ -23,8 +23,9 @@
 
 <script setup>
 import ContextMenu from './ContextMenu.vue'
+import { watch, ref, reactive } from 'vue'
 import { useRoute } from 'vue-router'
-import { ref, reactive } from 'vue'
+import { useStore } from 'vuex'
 const route = useRoute()
 
 /**
@@ -50,10 +51,34 @@ const openMenu = (e, index) => {
   selectIndex.value = index
   visible.value = true
 }
+
 /**
  * 关闭 tag 的点击事件
  */
-const onCloseClick = index => { }
+const store = useStore()
+const onCloseClick = index => {
+  store.commit('app/removeTagsView', {
+    type: 'index',
+    index: index
+  })
+}
+/**
+ * 关闭 右键 menu
+ */
+const closeMenu = () => {
+  visible.value = false
+}
+
+/**
+ * 监听变化
+ */
+watch(visible, (val) => {
+  if (val) {
+    document.body.addEventListener('click', closeMenu)
+  } else {
+    document.body.removeEventListener('click', closeMenu)
+  }
+})
 </script>
 
 <style lang="scss" scoped>
