@@ -35,7 +35,7 @@
         </el-table-column>
         <el-table-column :label="$t('msg.excel.action')" fixed="right" width="260">
           <template #default>
-            <el-button type="primary" size="mini">{{ $t('msg.excel.show') }}</el-button>
+            <el-button type="primary" @click="onImportExcelClick"> {{ $t('msg.excel.importExcel') }}</el-button>
             <el-button type="info" size="mini">{{ $t('msg.excel.showRole') }}</el-button>
             <el-button type="danger" size="mini">{{ $t('msg.excel.remove') }}</el-button>
           </template>
@@ -59,6 +59,7 @@
 
 <script setup>
 import { ref } from 'vue'
+import { useRouter } from 'vue-router'
 import { getUserManageList } from '@/api/user-manage'
 import { watchSwitchLang } from '@/utils/i18n'
 
@@ -95,6 +96,10 @@ const handleSizeChange = (currentSize) => {
 const handleCurrentChange = (currentPage) => {
   page.value = currentPage
   getListData()
+}
+const router = useRouter()
+const onImportExcelClick = () => {
+  router.push('/user/import')
 }
 </script>
 
