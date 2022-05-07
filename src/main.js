@@ -9,8 +9,11 @@ import './style/index.scss'
 import './permission'
 // 导入i18n
 import i18n from '@/i18n'
+// filter
+import installFilter from '@/filter'
 import installIcons from '@/icons'
 const app = createApp(App)
 installElementPlus(app)
 installIcons(app)
+installFilter(app)
 app.use(store).use(router).use(i18n).mount('#app')
