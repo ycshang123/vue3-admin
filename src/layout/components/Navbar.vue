@@ -40,6 +40,7 @@ import Breadcrumb from '@/components/Breadcrumb'
 import ThemePicker from '@/components/ThemeSelect/index'
 import Screenfull from '@/components/Screenfull'
 import HeaderSearch from '@/components/HeaderSearch'
+import { resetRouter } from '@/router'
 // 退出登录处理
 const store = useStore()
 const route = useRoute()
@@ -62,6 +63,7 @@ watch(
   }
 )
 const logout = () => {
+  resetRouter()
   store.dispatch('user/logout')
 }
 </script>
