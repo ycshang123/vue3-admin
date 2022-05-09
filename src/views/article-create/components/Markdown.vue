@@ -7,22 +7,37 @@
     </div>
   </div>
 </template>
-
-<style lang="scss" scoped>
-.markdown-container {
-  .bottom {
-    margin-top: 20px;
-    text-align: right;
-  }
-}
-</style>
 <script setup>
 import MkEditor from '@toast-ui/editor'
 import '@toast-ui/editor/dist/toastui-editor.css'
 import '@toast-ui/editor/dist/i18n/zh-cn'
 import { onMounted } from 'vue'
 import { useStore } from 'vuex'
+import { commitArticle } from './commit'
 
+const props = defineProps({
+  title: {
+    required: true,
+    type: String
+  }
+})
+
+const emits = defineEmits(['onSuccess'])
+// 处理提交
+const onSubmitClick = async () => {
+  // 创建文章
+  const res = await commitArticle({
+    title: props.title,
+    content: mkEditor.getHTML()
+  })
+  alert(JSON.stringify(res))
+  await commitArticle({
+    title: props.title,
+    content: mkEditor.getHTML()
+  })
+  mkEditor.reset()
+  emits('onSuccess')
+}
 // Editor实例
 let mkEditor
 // 处理离开页面切换语言导致 dom 无法被获取
@@ -44,3 +59,11 @@ const initEditor = () => {
   mkEditor.getMarkdown()
 }
 </script>
+<style lang="scss" scoped>
+.markdown-container {
+  .bottom {
+    margin-top: 20px;
+    text-align: right;
+  }
+}
+</style>
