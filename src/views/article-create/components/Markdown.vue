@@ -7,37 +7,29 @@
     </div>
   </div>
 </template>
+
 <script setup>
 import MkEditor from '@toast-ui/editor'
 import '@toast-ui/editor/dist/toastui-editor.css'
 import '@toast-ui/editor/dist/i18n/zh-cn'
-import { onMounted } from 'vue'
+import { onMounted, watch } from 'vue'
 import { useStore } from 'vuex'
-import { commitArticle } from './commit'
+import { watchSwitchLang } from '@/utils/i18n'
+import { commitArticle, editArticle } from './commit'
 
 const props = defineProps({
   title: {
     required: true,
     type: String
+  },
+  detail: {
+    type: Object
   }
 })
 
 const emits = defineEmits(['onSuccess'])
-// 处理提交
-const onSubmitClick = async () => {
-  // 创建文章
-  const res = await commitArticle({
-    title: props.title,
-    content: mkEditor.getHTML()
-  })
-  alert(JSON.stringify(res))
-  await commitArticle({
-    title: props.title,
-    content: mkEditor.getHTML()
-  })
-  mkEditor.reset()
-  emits('onSuccess')
-}
+
+// 初始化editor
 // Editor实例
 let mkEditor
 // 处理离开页面切换语言导致 dom 无法被获取
@@ -58,7 +50,51 @@ const initEditor = () => {
 
   mkEditor.getMarkdown()
 }
+
+// 监听语言变化
+watchSwitchLang(() => {
+  if (!el) return
+  const htmlStr = mkEditor.getHTML()
+  mkEditor.destroy()
+  initEditor()
+  mkEditor.setHTML(htmlStr)
+})
+
+// 编辑相关
+watch(
+  () => props.detail,
+  (val) => {
+    if (val && val.content) {
+      mkEditor.setHTML(val.content)
+    }
+  },
+  {
+    immediate: true
+  }
+)
+
+// 处理提交
+const onSubmitClick = async () => {
+  if (props.detail && props.detail._id) {
+    // 编辑文章
+    await editArticle({
+      id: props.detail._id,
+      title: props.title,
+      content: mkEditor.getHTML()
+    })
+  } else {
+    // 创建文章
+    await commitArticle({
+      title: props.title,
+      content: mkEditor.getHTML()
+    })
+  }
+
+  mkEditor.reset()
+  emits('onSuccess')
+}
 </script>
+
 <style lang="scss" scoped>
 .markdown-container {
   .bottom {
