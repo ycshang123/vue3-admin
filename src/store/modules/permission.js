@@ -1,5 +1,6 @@
 // 专门处理权限路由的模块
 import { publicRoutes, privateRoutes } from '@/router'
+console.log(publicRoutes)
 export default {
   namespaced: true,
   state: {
