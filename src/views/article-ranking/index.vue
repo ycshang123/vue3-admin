@@ -17,7 +17,7 @@
             {{ $filters.relativeTime(row.publicDate) }}
           </template>
           <template #default="{ row }" v-else-if="item.prop === 'action'">
-            <el-button type="primary" size="mini" @click="onShowClick(row)">{{ $t('msg.article.show') }}</el-button>
+            <el-button type="primary" size="small" @click="onShowClick(row)">{{ $t('msg.article.show') }}</el-button>
             <el-button type="danger" size="mini" @click="onRemoveClick(row)">
               {{ $t('msg.article.remove') }}
             </el-button>
@@ -49,6 +49,7 @@ import { getArticleList, deleteArticle } from '@/api/article'
 import { watchSwitchLang } from '@/utils/i18n'
 import { useI18n } from 'vue-i18n'
 import { tableColumns, dynamicData, selectDynamicLabel } from './dynamic'
+import { useRouter } from 'vue-router'
 /**
 * size 改变触发
 */
@@ -103,6 +104,13 @@ const onRemoveClick = row => {
     // 重新渲染数据
     getListData()
   })
+}
+/**
+ * 查看按钮点击事件
+ */
+const router = useRouter()
+const onShowClick = row => {
+  router.push(`/article/${row._id}`)
 }
 </script>
 
