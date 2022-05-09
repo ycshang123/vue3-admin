@@ -18,7 +18,9 @@
           </template>
           <template #default="{ row }" v-else-if="item.prop === 'action'">
             <el-button type="primary" size="mini" @click="onShowClick(row)">{{ $t('msg.article.show') }}</el-button>
-            <el-button type="danger" size="mini" @click="onRemoveClick(row)">{{ $t('msg.article.remove') }}</el-button>
+            <el-button type="danger" size="mini" @click="onRemoveClick(row)">
+              {{ $t('msg.article.remove') }}
+            </el-button>
           </template>
         </el-table-column>
       </el-table>
@@ -40,9 +42,12 @@
 
 <script setup>
 import { ref, onActivated, onMounted } from 'vue'
+import { ElMessage, ElMessageBox } from 'element-plus'
+import 'element-plus/theme-chalk/el-message-box.css'
 import { tableRef, initSortable } from './sortable'
-import { getArticleList } from '@/api/article'
+import { getArticleList, deleteArticle } from '@/api/article'
 import { watchSwitchLang } from '@/utils/i18n'
+import { useI18n } from 'vue-i18n'
 import { tableColumns, dynamicData, selectDynamicLabel } from './dynamic'
 /**
 * size 改变触发
@@ -85,6 +90,20 @@ onActivated(getListData)
 onMounted(() => {
   initSortable(tableData, getListData)
 })
+// 删除用户
+const i18n = useI18n()
+const onRemoveClick = row => {
+  ElMessageBox.confirm(i18n.t('msg.article.dialogTitle1') + row.title + i18n.t('msg.article.dialogTitle2'),
+    {
+      type: 'warning'
+    }
+  ).then(async () => {
+    await deleteArticle(row._id)
+    ElMessage.success(i18n.t('msg.article.removeSuccess'))
+    // 重新渲染数据
+    getListData()
+  })
+}
 </script>
 
 <style lang="scss" scoped>

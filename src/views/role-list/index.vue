@@ -33,7 +33,6 @@ const allRoles = ref([])
 const selectRoleId = ref('')
 const distributePermissionVisible = ref(false)
 const onDistributePermissionClick = (row) => {
-  console.log(123123)
   distributePermissionVisible.value = true
   selectRoleId.value = row.id
 }
